@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class MazeSolver {
     private Maze maze;
@@ -27,9 +28,20 @@ public class MazeSolver {
      * @return An arraylist of MazeCells to visit in order
      */
     public ArrayList<MazeCell> getSolution() {
-        // TODO: Get the solution from the maze
-        // Should be from start to end cells
-        return null;
+        // Initialize stack
+        Stack<MazeCell> st = new Stack<MazeCell>();
+        // Start from back and push parents until beginning
+        MazeCell cell = maze.getEndCell();
+        while(cell != null) {
+            st.push(cell);
+            cell = cell.getParent();
+        }
+        // Pop all cells into arraylist
+        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
+        while(!st.isEmpty()){
+            solution.add(st.pop());
+        }
+        return solution;
     }
 
     /**
