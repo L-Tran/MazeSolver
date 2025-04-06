@@ -5,6 +5,8 @@
  */
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class MazeSolver {
@@ -51,8 +53,39 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-
-        return null;
+        Stack<MazeCell> st = new Stack<MazeCell>();
+        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
+        st.push(maze.getStartCell());
+        while(st.peek() != maze.getEndCell()) {
+            MazeCell current = st.peek();
+            int row = current.getRow();
+            int col = current.getCol();
+            if(maze.isValidCell(row - 1, col)) {
+                MazeCell neighbor = maze.getCell(row - 1, col);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                st.push(neighbor);
+            }
+            if(maze.isValidCell(row, col + 1)) {
+                MazeCell neighbor = maze.getCell(row, col + 1);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                st.push(neighbor);
+            }
+            if(maze.isValidCell(row + 1, col)) {
+                MazeCell neighbor = maze.getCell(row + 1, col);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                st.push(neighbor);
+            }
+            if(maze.isValidCell(row, col - 1)) {
+                MazeCell neighbor = maze.getCell(row, col - 1);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                st.push(neighbor);
+            }
+        }
+        return getSolution();
     }
 
     /**
@@ -62,7 +95,39 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        return null;
+        Queue<MazeCell> q = new LinkedList<MazeCell>();
+        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
+        q.add(maze.getStartCell());
+        while(!q.isEmpty()) {
+            MazeCell current = q.peek();
+            int row = current.getRow();
+            int col = current.getCol();
+            if(maze.isValidCell(row - 1, col)) {
+                MazeCell neighbor = maze.getCell(row - 1, col);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                q.add(neighbor);
+            }
+            if(maze.isValidCell(row, col + 1)) {
+                MazeCell neighbor = maze.getCell(row, col + 1);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                q.add(neighbor);
+            }
+            if(maze.isValidCell(row + 1, col)) {
+                MazeCell neighbor = maze.getCell(row + 1, col);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                q.add(neighbor);
+            }
+            if(maze.isValidCell(row, col - 1)) {
+                MazeCell neighbor = maze.getCell(row, col - 1);
+                neighbor.setExplored(true);
+                neighbor.setParent(current);
+                q.add(neighbor);
+            }
+        }
+        return getSolution();
     }
 
     public static void main(String[] args) {
