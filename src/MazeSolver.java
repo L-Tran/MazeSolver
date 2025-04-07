@@ -1,6 +1,6 @@
 /**
  * Solves the given maze using DFS or BFS
- * @author Ms. Namasivayam
+ * @author Ms. Namasivayam finished by Logan Tran
  * @version 03/10/2023
  */
 
@@ -51,38 +51,24 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeDFS() {
-        // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        Stack<MazeCell> st = new Stack<MazeCell>();
-        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
-        st.push(maze.getStartCell());
-        while(st.peek() != maze.getEndCell()) {
-            MazeCell current = st.peek();
+        Stack<MazeCell> explored = new Stack<MazeCell>();
+        explored.push(maze.getStartCell());
+        while(!explored.isEmpty()) {
+            MazeCell current = explored.pop();
             int row = current.getRow();
             int col = current.getCol();
             if(maze.isValidCell(row - 1, col)) {
-                MazeCell neighbor = maze.getCell(row - 1, col);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                st.push(neighbor);
+                explored.push(updateCell(row - 1, col, current));
             }
             if(maze.isValidCell(row, col + 1)) {
-                MazeCell neighbor = maze.getCell(row, col + 1);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                st.push(neighbor);
+                explored.push(updateCell(row, col + 1, current));
             }
             if(maze.isValidCell(row + 1, col)) {
-                MazeCell neighbor = maze.getCell(row + 1, col);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                st.push(neighbor);
+                explored.push(updateCell(row + 1, col, current));
             }
             if(maze.isValidCell(row, col - 1)) {
-                MazeCell neighbor = maze.getCell(row, col - 1);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                st.push(neighbor);
+                explored.push(updateCell(row, col - 1, current));
             }
         }
         return getSolution();
@@ -93,41 +79,35 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeBFS() {
-        // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-        Queue<MazeCell> q = new LinkedList<MazeCell>();
-        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
-        q.add(maze.getStartCell());
-        while(!q.isEmpty()) {
-            MazeCell current = q.peek();
+        Queue<MazeCell> explored = new LinkedList<MazeCell>();
+        explored.add(maze.getStartCell());
+        while(!explored.isEmpty()) {
+            MazeCell current = explored.remove();
             int row = current.getRow();
             int col = current.getCol();
             if(maze.isValidCell(row - 1, col)) {
                 MazeCell neighbor = maze.getCell(row - 1, col);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                q.add(neighbor);
+                explored.add(updateCell(row - 1, col, current));
             }
             if(maze.isValidCell(row, col + 1)) {
-                MazeCell neighbor = maze.getCell(row, col + 1);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                q.add(neighbor);
+                explored.add(updateCell(row, col + 1, current));
             }
             if(maze.isValidCell(row + 1, col)) {
-                MazeCell neighbor = maze.getCell(row + 1, col);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                q.add(neighbor);
+                explored.add(updateCell(row + 1, col, current));
             }
             if(maze.isValidCell(row, col - 1)) {
-                MazeCell neighbor = maze.getCell(row, col - 1);
-                neighbor.setExplored(true);
-                neighbor.setParent(current);
-                q.add(neighbor);
+                explored.add(updateCell(row, col - 1, current));
             }
         }
         return getSolution();
+    }
+
+    public MazeCell updateCell(int row, int col, MazeCell current) {
+        MazeCell neighbor = maze.getCell(row, col);
+        neighbor.setExplored(true);
+        neighbor.setParent(current);
+        return neighbor;
     }
 
     public static void main(String[] args) {

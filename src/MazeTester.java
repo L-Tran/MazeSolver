@@ -30,7 +30,7 @@ public class MazeTester {
         expected.add(maze.getCell(0, 4));
         expected.add(maze.getCell(0, 5));
 
-        // Manually set parents according to our solution
+        // Manually updateCell parents according to our solution
         for (int i=expected.size()-1; i>0; i--) {
             expected.get(i).setParent(expected.get(i-1));
         }
