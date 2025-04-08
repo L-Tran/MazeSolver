@@ -51,23 +51,30 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeDFS() {
-        // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        // Initialize stack and push start cell
         Stack<MazeCell> explored = new Stack<MazeCell>();
         explored.push(maze.getStartCell());
+        // Keep looping until no elements left
         while(!explored.isEmpty()) {
+            // pop element to check possible directions
             MazeCell current = explored.pop();
             int row = current.getRow();
             int col = current.getCol();
+            // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
             if(maze.isValidCell(row - 1, col)) {
+                // Push if exploring
                 explored.push(updateCell(row - 1, col, current));
             }
             if(maze.isValidCell(row, col + 1)) {
+                // Push if exploring
                 explored.push(updateCell(row, col + 1, current));
             }
             if(maze.isValidCell(row + 1, col)) {
+                // Push if exploring
                 explored.push(updateCell(row + 1, col, current));
             }
             if(maze.isValidCell(row, col - 1)) {
+                // Push if exploring
                 explored.push(updateCell(row, col - 1, current));
             }
         }
@@ -79,33 +86,44 @@ public class MazeSolver {
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
     public ArrayList<MazeCell> solveMazeBFS() {
-        // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        // Initialize queue
         Queue<MazeCell> explored = new LinkedList<MazeCell>();
+        // Add start cell
         explored.add(maze.getStartCell());
+        // Keep looping until no elements left
         while(!explored.isEmpty()) {
+            // Remove element to check possible directions
             MazeCell current = explored.remove();
             int row = current.getRow();
             int col = current.getCol();
+            // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
             if(maze.isValidCell(row - 1, col)) {
-                MazeCell neighbor = maze.getCell(row - 1, col);
+                // Push if exploring
                 explored.add(updateCell(row - 1, col, current));
             }
             if(maze.isValidCell(row, col + 1)) {
+                // Push if exploring
                 explored.add(updateCell(row, col + 1, current));
             }
             if(maze.isValidCell(row + 1, col)) {
+                // Push if exploring
                 explored.add(updateCell(row + 1, col, current));
             }
             if(maze.isValidCell(row, col - 1)) {
+                // Push if exploring
                 explored.add(updateCell(row, col - 1, current));
             }
         }
         return getSolution();
     }
 
+    // Update cell when explored
     public MazeCell updateCell(int row, int col, MazeCell current) {
+        // Create neighbor cell when valid
         MazeCell neighbor = maze.getCell(row, col);
+        // Set cell to explored
         neighbor.setExplored(true);
+        // Set parent to cell
         neighbor.setParent(current);
         return neighbor;
     }
